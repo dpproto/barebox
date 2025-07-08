@@ -48,6 +48,8 @@
 
 #include "lz4defs.h"
 
+#include <debug_ll.h>
+
 static int lz4_uncompress(const char *source, char *dest, int osize)
 {
 	const BYTE *ip = (const BYTE *) source;
@@ -86,7 +88,10 @@ static int lz4_uncompress(const char *source, char *dest, int osize)
 			 * (min 4) + 5 literals
 			 */
 			if (cpy != oend)
+			{
+				puts_ll("ERROR >> copy literals\n");
 				goto _output_error;
+			}
 
 			memcpy(op, ip, length);
 			ip += length;
@@ -102,7 +107,10 @@ static int lz4_uncompress(const char *source, char *dest, int osize)
 
 		/* Error: offset create reference outside destination buffer */
 		if (unlikely(ref < (BYTE *const) dest))
+		{
+			puts_ll("ERR: ref outside dest buf\n");
 			goto _output_error;
+		}
 
 		/* get matchlength */
 		length = token & ML_MASK;
