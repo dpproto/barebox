@@ -11,6 +11,9 @@
 #include <fs.h>
 #include <mach/socfpga/cyclone5-regs.h>
 
+/*
+ * Ethernet PHY: Microchip/Micrel KSZ9031RNX
+ */
 static int phy_fixup(struct phy_device *dev)
 {
 	/*
