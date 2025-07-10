@@ -135,15 +135,18 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
 							   barebox_image_size,
 							   hd);
 
+	putc_ll('%');
 	if (IS_ENABLED(CONFIG_CPU_V7))
 		armv7_hyp_install();
 
 	relocate_to_adr(barebox_base);
 
+	putc_ll('C');
 	setup_c();
 
 	barrier();
 
+	putc_ll('B');
 	pbl_barebox_break();
 
 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
