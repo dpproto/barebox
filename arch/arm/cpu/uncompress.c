@@ -100,8 +100,11 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
 
 	pr_debug("jumping to uncompressed image at 0x%p\n", barebox);
 
+	pr_debug("calling armv7_switch_to_hyp()...\n");
 	if (IS_ENABLED(CONFIG_CPU_V7) && boot_cpu_mode() == HYP_MODE)
 		armv7_switch_to_hyp();
+
+	pr_debug("armv7_switch_to_hyp() OK. Now jumping...\n");
 
 	barebox(membase, memsize, handoff_data);
 }
