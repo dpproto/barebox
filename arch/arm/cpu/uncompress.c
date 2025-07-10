@@ -86,6 +86,7 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
 
 	pr_debug("uncompressing barebox binary at 0x%p (size 0x%08x) to 0x%08lx (uncompressed size: 0x%08x)\n",
 			pg_start, pg_len, barebox_base, uncompressed_len);
+	pr_debug("pc=0x%08lx\n", get_pc());
 
 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
 
