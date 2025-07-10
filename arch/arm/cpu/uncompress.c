@@ -104,6 +104,7 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
 	if (IS_ENABLED(CONFIG_CPU_V7) && boot_cpu_mode() == HYP_MODE)
 		armv7_switch_to_hyp();
 
+	readl((void *)barebox);
 	pr_debug("armv7_switch_to_hyp() OK. Now jumping...\n");
 
 	barebox(membase, memsize, handoff_data);
