@@ -262,7 +262,7 @@ again:
 	}
 
 	/* ensure wchar_t nul termination */
-	buf = memalign(64, read_size + 10);		// add 10 bytes; absolute random choice...
+	buf = calloc(ALIGN(read_size, 2) + 2, 1);
 	if (!buf) {
 		ret = errno_set(-ENOMEM);
 		goto err_out;
