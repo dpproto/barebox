@@ -10,8 +10,13 @@
 #include <arm/intel/socfpga/socfpga_cyclone5.dtsi>
 
 / {
+	barebox,deep-probe;
+};
+
+/ {
 	model = "Enclustra Mercury+ SA2";
-	compatible = "altr,socfpga-cyclone5", "altr,socfpga";
+	compatible = "enclustra,mercury-sa2-st1", "enclustra,mercury-sa2", "altr,socfpga-cyclone5", "altr,socfpga";
+
 
 	chosen {
 		stdout-path = "serial0:115200n8";
@@ -47,6 +52,16 @@
 	clock-frequency = <50000000>;
 };
 
+&fpga_bridge0 {
+	status = "okay";
+	bridge-enable = <0x1>;
+};
+
+&fpga_bridge1 {
+	status = "okay";
+	bridge-enable = <0x1>;
+};
+
 &i2c_encl {
 	i2c-sda-hold-time-ns = <300>;
 	clock-frequency = <100000>;
@@ -57,7 +72,8 @@
 		reg = <0x6f>;
 	};
 
-	atsha204a: crypto@64 {
+	atsha204a: atsha204a@64 {
+		status = "okay";
 		compatible = "atmel,atsha204a";
 		reg = <0x64>;
 	};
@@ -124,6 +140,21 @@
 
 		phy3: ethernet-phy@3 {
 			reg = <3>;
+
+			/*
+			Ethernet PHY reset pin (active low, GPIO44) :
+			- 1st field: GPIO controller phandle
+			- 2nd field: GPIO line offset
+			- 3rd field: flags (see gpio.txt)
+
+			Reference:
+			- Cyclone 5 HPS technical reference, table 23-1: GPIO44 is on controller
+			GPIO1, whose 1st line is GPIO29. The offset is thus 44 - 29 = 15.
+			- Linux documentation:
+				- Documentation/devicetree/bindings/gpio/gpio.txt
+				- Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
+			*/
+			reset-gpios = <&portb 15 0x01>;
 
 			/* Add 2ns RX clock delay (1.2ns + 0.78ns)*/
 			rxc-skew-ps = <1680>;
