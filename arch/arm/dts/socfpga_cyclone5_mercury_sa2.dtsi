@@ -138,7 +138,7 @@
 				- Documentation/devicetree/bindings/gpio/gpio.txt
 				- Documentation/devicetree/bindings/gpio/snps,dw-apb-gpio.yaml
 			*/
-			reset-gpios = <&gpio1 15 0x01>;
+			reset-gpios = <&portb 15 0x01>;
 
 			/* Add 2ns RX clock delay (1.2ns + 0.78ns)*/
 			rxc-skew-ps = <1680>;
