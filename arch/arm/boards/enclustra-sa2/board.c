@@ -16,13 +16,6 @@
  */
 static int phy_fixup(struct phy_device *dev)
 {
-	/*
-	 * min rx data delay, max rx/tx clock delay,
-	 * min rx/tx control delay
-	 */
-	phy_write_mmd(dev, MDIO_MMD_WIS, 4, 0);
-	phy_write_mmd(dev, MDIO_MMD_WIS, 5, 0);
-	phy_write_mmd(dev, MDIO_MMD_WIS, 8, 0x003ff);
 	return 0;
 }
 
