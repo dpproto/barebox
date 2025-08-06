@@ -24,8 +24,6 @@
 
 	aliases {
 		ethernet0 = &gmac1;
-		gpio0 = &porta;
-		gpio1 = &portb;
 	};
 
 	/* Adjusted the i2c labels to use generic base-board dtsi files for
