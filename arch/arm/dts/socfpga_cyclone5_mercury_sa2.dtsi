@@ -10,8 +10,13 @@
 #include <arm/intel/socfpga/socfpga_cyclone5.dtsi>
 
 / {
+	barebox,deep-probe;
+};
+
+/ {
 	model = "Enclustra Mercury+ SA2";
 	compatible = "enclustra,mercury-sa2-st1", "enclustra,mercury-sa2", "altr,socfpga-cyclone5", "altr,socfpga";
+
 
 	chosen {
 		stdout-path = "serial0:115200n8";
