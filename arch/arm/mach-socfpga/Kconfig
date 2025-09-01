@@ -39,6 +39,10 @@ config MACH_SOCFPGA_ENCLUSTRA_SA2
 	select BITREV
 	bool "Enclustra SA2"
 
+config MACH_SOCFPGA_ENCLUSTRA_SA2_SI5338
+	depends on MACH_SOCFPGA_ENCLUSTRA_SA2
+	bool "Configure the SI5338 clock generator on ST1 baseboard"
+
 config MACH_SOCFPGA_REFLEX_ACHILLES
 	select ARCH_SOCFPGA_ARRIA10
 	bool "Reflex Achilles"
