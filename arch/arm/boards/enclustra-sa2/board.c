@@ -12,6 +12,7 @@
 #include <mach/socfpga/cyclone5-regs.h>
 #include <net.h>
 #include "atsha204a.h"
+#include "si5338_config.h"
 
 /** Enclustra's MAC address vendor prefix is 20:B0:F7 */
 #define ENCLUSTRA_PREFIX			(0x20b0f7)
@@ -64,6 +65,11 @@ static int socfpga_init(void)
 		phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK, phy_fixup);
 
 	set_mac_addr();
+
+#ifdef CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2_SI5338
+	/* configure clock generator on the Enclustra ST1 baseboard: */
+	si5338_init();
+#endif
 
 	return 0;
 }
