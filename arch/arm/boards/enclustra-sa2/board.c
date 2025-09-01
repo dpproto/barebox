@@ -19,7 +19,6 @@
 
 /** Enclustra's MAC address vendor prefix is 20:B0:F7 */
 #define ENCLUSTRA_PREFIX            (0x20b0f7)
-#define SERIAL_NUMBER_NUM_BYTES     (4)
 
 /*
  * Ethernet PHY: Microchip/Micrel KSZ9031RNX
@@ -95,6 +94,11 @@ static int socfpga_init(void)
 								   phy_fixup);
 
 	set_mac_addr();
+
+#ifdef CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2_SI5338
+	/* configure clock generator on the Enclustra ST1 baseboard: */
+	si5338_init();
+#endif
 
 	return 0;
 }
