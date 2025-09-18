@@ -76,6 +76,18 @@
 		status = "okay";
 		compatible = "atmel,atsha204a";
 		reg = <0x64>;
+
+		nvmem-layout {
+			compatible = "fixed-layout";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			mac_address_0: mac@10 {
+				compatible = "mac-base";
+				reg = <0x10 0x6>;
+				#nvmem-cell-cells = <0>;
+			};
+		};
 	};
 };
 
@@ -129,9 +141,10 @@
 
 &gmac1 {
 	status = "okay";
-	/delete-property/ mac-address;
 	phy-mode = "rgmii";
 	phy-handle = <&phy3>;
+	nvmem-cells = <&mac_address_0>;
+	nvmem-cell-names = "mac-address";
 
 	mdio0 {
 		#address-cells = <1>;
