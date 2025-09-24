@@ -24,6 +24,7 @@
 
 	aliases {
 		ethernet0 = &gmac1;
+		som-sernum = "/serial-number";
 	};
 
 	/* Adjusted the i2c labels to use generic base-board dtsi files for
@@ -45,6 +46,11 @@
 		name = "memory";
 		device_type = "memory";
 		reg = <0x0 0x80000000>; /* 2GB */
+	};
+
+	serial-number {
+		nvmem-cells = <&ser_num>;
+		nvmem-cell-names = "serial-number";
 	};
 };
 
@@ -81,6 +87,11 @@
 			compatible = "fixed-layout";
 			#address-cells = <1>;
 			#size-cells = <1>;
+
+			ser_num: serial-number@0 {
+				reg = <0x00 0x4>;
+				#nvmem-cell-cells = <0>;
+			};
 
 			mac_address_0: mac@10 {
 				compatible = "mac-base";

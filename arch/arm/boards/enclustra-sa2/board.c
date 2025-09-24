@@ -19,6 +19,7 @@
 
 /** Enclustra's MAC address vendor prefix is 20:B0:F7 */
 #define ENCLUSTRA_PREFIX            (0x20b0f7)
+#define SERIAL_NUMBER_NUM_BYTES     (4)
 
 /*
  * Ethernet PHY: Microchip/Micrel KSZ9031RNX
@@ -84,6 +85,42 @@ fallback_addr:
 	eth_register_ethaddr(1, enclustra_ethaddr_fallback2);
 }
 
+/*
+ * Read the SoM serial number via the atsha204a driver.
+ */
+static void set_ser_num(void)
+{
+	u8 *data = NULL;
+	uint32_t ser_num = 0;
+	char ser_num_str[12];
+	static const char * const aliases[] = { "som-sernum" };
+	struct device_node *np, *root;
+
+	root = of_get_root_node();
+
+	for (int i = 0; i < ARRAY_SIZE(aliases); i++) {
+		const char *alias = aliases[i];
+
+		np = of_find_node_by_alias(root, alias);
+		if (!np) {
+			pr_warn("%s() >> ERROR: can't find alias %s\n", __func__, alias);
+			continue;
+		}
+		data = nvmem_cell_get_and_read(np, "serial-number",
+									   SERIAL_NUMBER_NUM_BYTES);
+		if (IS_ERR(data)) {
+			pr_warn("%s() >> ERROR: can't read NVMEM cell\n", __func__);
+			data = NULL;
+		}
+	}
+	if (!data)
+		return;
+
+	ser_num = data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3];
+	sprintf(ser_num_str, "%d", ser_num);
+	barebox_set_serial_number(ser_num_str);
+}
+
 static int socfpga_init(void)
 {
 	if (!of_machine_is_compatible("enclustra,mercury-sa2"))
@@ -94,6 +131,7 @@ static int socfpga_init(void)
 								   phy_fixup);
 
 	set_mac_addr();
+	set_ser_num();
 
 #ifdef CONFIG_MACH_SOCFPGA_ENCLUSTRA_SA2_SI5338
 	/* configure clock generator on the Enclustra ST1 baseboard: */
