@@ -157,6 +157,17 @@
 	status = "okay";
 };
 
+&portb {
+	/* Hog dual fast Ethernet PHYs reset pin to release them from reset.
+	HPS GPIO35: 35 - 29 = 6. */
+	dfe_phy_rst_hog {
+		gpio-hog;
+		gpios = <6 0>;
+		output-high;
+		line-name = "dfe_phy_rst_n";
+	};
+};
+
 &gmac1 {
 	status = "okay";
 	phy-mode = "rgmii";
